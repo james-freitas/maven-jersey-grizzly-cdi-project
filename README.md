@@ -1,0 +1,1 @@
+### Simple Maven project using Jersey, CDI and Grizzly
