@@ -1,4 +1,4 @@
-package com.example;
+package com.coldsoft.projects.service;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -9,11 +9,11 @@ import javax.inject.Singleton;
  */
 @Named
 @Singleton
-public class NewClass {
+public class ProjectService {
 
   @Override
   public String toString() {
-    return "NewClass{" + '}';
+    return "ProjectServiceInstance";
   }
 
 }

@@ -1,21 +1,22 @@
-package com.example;
+package com.coldsoft.projects;
 
+
+import com.coldsoft.projects.binder.WebServiceBinder;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import java.io.IOException;
 import java.net.URI;
-import org.glassfish.jersey.server.model.Resource;
 
 /**
- * Main class.
+ * ApplicationServer class.
  *
  */
-public class Main {
+public class ApplicationServer {
 
   // Base URI the Grizzly HTTP server will listen on
-  public static final String BASE_URI = "http://localhost:8090/myapp/";
+  public static final String BASE_URI = "http://localhost:8080/api/";
 
   /**
    * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
@@ -25,7 +26,10 @@ public class Main {
   public static HttpServer startServer() {
     // create a resource config that scans for JAX-RS resources and providers
     // in com.example package
-    final ResourceConfig rc = new ResourceConfig().setClassLoader(Thread.currentThread().getContextClassLoader()).packages("com.example").register(new WebServiceBinder());
+    final ResourceConfig rc = new ResourceConfig()
+            .setClassLoader(
+                    Thread.currentThread().getContextClassLoader())
+                            .packages("com.coldsoft.projects").register(new WebServiceBinder());
 
     // create and start a new instance of grizzly http server
     // exposing the Jersey application at BASE_URI
@@ -33,7 +37,7 @@ public class Main {
   }
 
   /**
-   * Main method.
+   * ApplicationServer method.
    *
    * @param args
    * @throws IOException

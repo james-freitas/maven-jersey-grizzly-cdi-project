@@ -1,8 +1,10 @@
-package com.example;
+package com.coldsoft.projects.binder;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
+
+import com.coldsoft.projects.service.ProjectService;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.jboss.weld.environment.se.Weld;
 
@@ -11,7 +13,7 @@ public class WebServiceBinder extends AbstractBinder {
   @Override
   protected void configure() {
     BeanManager bm = getBeanManager();
-    bind(getBean(bm, NewClass.class)).to(NewClass.class);
+    bind(getBean(bm, ProjectService.class)).to(ProjectService.class);
   }
 
   private BeanManager getBeanManager() {
