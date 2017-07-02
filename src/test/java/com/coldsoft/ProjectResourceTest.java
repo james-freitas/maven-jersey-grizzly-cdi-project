@@ -2,26 +2,32 @@ package com.coldsoft;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import com.coldsoft.projects.ApplicationServer;
+import com.coldsoft.projects.model.Project;
 import org.glassfish.grizzly.http.server.HttpServer;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class ClientTest {
+public class ProjectResourceTest {
 
     private HttpServer server;
     private WebTarget target;
+    private Client client;
 
     @Before
     public void setUp() throws Exception {
-        server = ApplicationServer.startServer();
-        Client client = ClientBuilder.newClient();
+        this.server = ApplicationServer.startServer();
+        this.client = ClientBuilder.newClient();
 
         // uncomment the following line if you want to enable
         // support for JSON in the client (you also have to uncomment
@@ -29,7 +35,7 @@ public class ClientTest {
         // --
         // c.configuration().enable(new org.glassfish.jersey.media.json.JsonJaxbFeature());
 
-        target = client.target(ApplicationServer.BASE_URI);
+        this.target = client.target(ApplicationServer.BASE_URI);
     }
 
     @After
@@ -44,12 +50,22 @@ public class ClientTest {
     }
 
     @Test
-    public void testIfProjectResourceGetByIdReturnsAProject() {
+    public void testShouldGetAProjectByItsId() {
         String response = target.path("projects/1").request().get(String.class);
         assertTrue(response.contains("Awesome Project"));
     }
 
+    @Test
+    public void testShouldInsertAProjectAndGetItByItsBrandNewResource(){
+        Project project = new Project("Basic Project", 2002);
+        String xml = project.toXML();
+        Entity<String> entity = Entity.entity(xml, MediaType.APPLICATION_XML);
+        Response response = target.path("projects").request().post(entity);
+        Assert.assertEquals(201, response.getStatus());
 
-
+        String location = response.getHeaderString("Location");
+        String content = client.target(location).request().get(String.class);
+        Assert.assertTrue(content.contains("Basic Project"));
+    }
 
 }

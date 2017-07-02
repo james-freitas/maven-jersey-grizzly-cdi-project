@@ -5,11 +5,10 @@ import com.coldsoft.projects.service.ProjectService;
 
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.net.URI;
 
 /**
  * Root resource (exposed at "myresource" path)
@@ -36,5 +35,12 @@ public class ProjectResource {
       return project.toXML();
   }
 
+  @POST
+  @Consumes(MediaType.APPLICATION_XML)
+  public Response addProject(String xmlContent){
+      Project projectAdded = projectService.addProjectFromXML(xmlContent);
+      URI uri = URI.create("/api/projects/" + projectAdded.getId());
+      return Response.created(uri).build();
+  }
 
 }
