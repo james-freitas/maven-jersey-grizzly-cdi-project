@@ -11,6 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ClientTest {
 
@@ -33,14 +34,21 @@ public class ClientTest {
 
     @After
     public void tearDown() throws Exception {
-        server.stop();
+        server.shutdown();
     }
 
     @Test
-    public void testGetIt() {
-        String responseMsg = target.path("projects").request().get(String.class);
+    public void testIfResourceIsAccessibleUsingInjectedService() {
+        String responseMsg = target.path("projects/test").request().get(String.class);
         assertEquals("ProjectServiceInstance", responseMsg);
     }
+
+    @Test
+    public void testIfProjectResourceGetByIdReturnsAProject() {
+        String response = target.path("projects/1").request().get(String.class);
+        assertTrue(response.contains("Awesome Project"));
+    }
+
 
 
 
