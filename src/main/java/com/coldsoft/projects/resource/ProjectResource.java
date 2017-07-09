@@ -23,7 +23,7 @@ public class ProjectResource {
   @GET
   @Path("test")
   @Produces(MediaType.TEXT_PLAIN)
-  public String getIt() {
+  public String getTextMessage() {
       return projectService.toString();
   }
 
