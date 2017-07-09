@@ -27,4 +27,7 @@ public class ProjectDao {
         return database.get(id);
     }
 
+    public void remove(Long id) {
+        database.remove(id);
+    }
 }

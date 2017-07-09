@@ -1,5 +1,6 @@
 package com.coldsoft.projects.resource;
 
+import com.coldsoft.projects.dao.ProjectDao;
 import com.coldsoft.projects.model.Project;
 import com.coldsoft.projects.service.ProjectService;
 
@@ -41,6 +42,13 @@ public class ProjectResource {
       Project projectAdded = projectService.addProjectFromXML(xmlContent);
       URI uri = URI.create("/api/projects/" + projectAdded.getId());
       return Response.created(uri).build();
+  }
+
+  @DELETE
+  @Path("{id}")
+  public Response removeProject(@PathParam("id") Long id) {
+      new ProjectDao().remove(id);
+      return Response.ok().build();
   }
 
 }

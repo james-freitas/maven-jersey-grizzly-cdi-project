@@ -8,6 +8,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.coldsoft.projects.ApplicationServer;
+import com.coldsoft.projects.dao.ProjectDao;
 import com.coldsoft.projects.model.Project;
 import org.glassfish.grizzly.http.server.HttpServer;
 
@@ -66,6 +67,18 @@ public class ProjectResourceTest {
         String location = response.getHeaderString("Location");
         String content = client.target(location).request().get(String.class);
         Assert.assertTrue(content.contains("Basic Project"));
+    }
+
+    @Test
+    public void testShouldDeleteAProjectAndReturnOkResponse(){
+        Project projectToDelete = new Project("Project to delete", 2011);
+        Project projectAdded = new ProjectDao().add(projectToDelete);
+        Assert.assertEquals(2l, projectAdded.getId());
+
+        target.path("projects/2").request().delete(String.class);
+        Project projectDeleted = new ProjectDao().getProjectById(2l);
+        Assert.assertNull(projectDeleted);
+        System.out.println("End");
     }
 
 }

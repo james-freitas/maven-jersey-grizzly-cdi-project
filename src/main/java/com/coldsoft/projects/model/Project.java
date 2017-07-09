@@ -4,7 +4,7 @@ import com.thoughtworks.xstream.XStream;
 
 public class Project {
 
-    private Long id;
+    private long id;
     private String name;
     private int year;
 
@@ -12,7 +12,7 @@ public class Project {
 
     }
 
-    public Project(Long id, String name, int year) {
+    public Project(long id, String name, int year) {
         this.id = id;
         this.name = name;
         this.year = year;
@@ -31,7 +31,7 @@ public class Project {
         this.id = id;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 }
