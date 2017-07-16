@@ -30,4 +30,9 @@ public class ProjectDao {
     public void remove(Long id) {
         database.remove(id);
     }
+
+    public void update(Project project) {
+        database.remove(project.getId());
+        database.put(project.getId(), project);
+    }
 }

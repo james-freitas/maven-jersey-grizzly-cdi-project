@@ -78,7 +78,22 @@ public class ProjectResourceTest {
         target.path("projects/2").request().delete(String.class);
         Project projectDeleted = new ProjectDao().getProjectById(2l);
         Assert.assertNull(projectDeleted);
-        System.out.println("End");
+    }
+
+    @Test
+    public void testShouldEditAProjectAndReturnOkResponse(){
+        ProjectDao projectDao = new ProjectDao();
+        Project project = projectDao.getProjectById(1l);
+        Assert.assertEquals("Awesome Project", project.getName());
+
+        project.setName("Awesome Project - Modified");
+        String xml = project.toXML();
+        Entity<String> entity = Entity.entity(xml, MediaType.APPLICATION_XML);
+        Response response = target.path("projects/1").request().put(entity);
+        Assert.assertEquals(200, response.getStatus());
+
+        String newResponse = target.path("projects/1").request().get(String.class);
+        Assert.assertTrue(newResponse.contains("Awesome Project - Modified"));
     }
 
 }

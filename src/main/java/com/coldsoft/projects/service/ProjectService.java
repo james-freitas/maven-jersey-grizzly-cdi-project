@@ -6,8 +6,6 @@ import com.thoughtworks.xstream.XStream;
 
 import javax.inject.Inject;
 
-//@Named
-//@Singleton
 public class ProjectService {
 
     @Override
@@ -27,4 +25,11 @@ public class ProjectService {
         return projectDao.add(project);
     }
 
+    public void update(Project project) {
+        projectDao.update(project);
+    }
+
+    public void delete(Long id) {
+        projectDao.remove(id);
+    }
 }

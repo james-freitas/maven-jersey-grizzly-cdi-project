@@ -3,6 +3,7 @@ package com.coldsoft.projects.resource;
 import com.coldsoft.projects.dao.ProjectDao;
 import com.coldsoft.projects.model.Project;
 import com.coldsoft.projects.service.ProjectService;
+import com.thoughtworks.xstream.XStream;
 
 
 import javax.inject.Inject;
@@ -27,7 +28,6 @@ public class ProjectResource {
       return projectService.toString();
   }
 
-
   @GET
   @Path("{id}")
   @Produces(MediaType.APPLICATION_XML)
@@ -47,8 +47,19 @@ public class ProjectResource {
   @DELETE
   @Path("{id}")
   public Response removeProject(@PathParam("id") Long id) {
-      new ProjectDao().remove(id);
+      projectService.delete(id);
       return Response.ok().build();
   }
+
+  @PUT
+  @Path("{id}")
+  public Response updateProject(String content, @PathParam("id") Long id){
+      Project projectModified = (Project)new XStream().fromXML(content);
+      projectModified.setId(id);
+
+      projectService.update(projectModified);
+      return Response.ok().build();
+  }
+
 
 }
