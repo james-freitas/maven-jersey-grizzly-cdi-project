@@ -35,4 +35,11 @@ public class ProjectDao {
         database.remove(project.getId());
         database.put(project.getId(), project);
     }
+
+    public void updateYear(Project projectWithModifiedYear) {
+        Project project = database.get(projectWithModifiedYear.getId());
+        project.setYear(projectWithModifiedYear.getYear());
+        database.remove(project.getId());
+        database.put(project.getId(), project);
+    }
 }

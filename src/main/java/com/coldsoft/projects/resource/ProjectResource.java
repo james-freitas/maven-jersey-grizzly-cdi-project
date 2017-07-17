@@ -61,5 +61,13 @@ public class ProjectResource {
       return Response.ok().build();
   }
 
+  @PUT
+  @Path("{id}/year")
+  public Response updateProjectYear(String content, @PathParam("id") Long id){
+      Project projectWithModifiedYear = (Project) new XStream().fromXML(content);
+
+      projectService.updateYear(projectWithModifiedYear);
+      return Response.ok().build();
+  }
 
 }

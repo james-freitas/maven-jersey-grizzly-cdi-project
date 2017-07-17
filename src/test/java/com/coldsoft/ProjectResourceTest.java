@@ -1,5 +1,6 @@
 package com.coldsoft;
 
+import javax.inject.Inject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -24,6 +25,7 @@ public class ProjectResourceTest {
     private HttpServer server;
     private WebTarget target;
     private Client client;
+
 
     @Before
     public void setUp() throws Exception {
@@ -94,6 +96,35 @@ public class ProjectResourceTest {
 
         String newResponse = target.path("projects/1").request().get(String.class);
         Assert.assertTrue(newResponse.contains("Awesome Project - Modified"));
+
+        setDatabaseToOriginalState(project);
+    }
+
+    private void setDatabaseToOriginalState(Project project) {
+        project.setName("Awesome Project");
+        project.setYear(2017);
+        String xmlBackToOldState = project.toXML();
+        Entity<String> entityBackToOldState = Entity.entity(xmlBackToOldState, MediaType.APPLICATION_XML);
+        Response responseBackToOldState = target.path("projects/1").request().put(entityBackToOldState);
+        Assert.assertEquals(200, responseBackToOldState.getStatus());
+    }
+
+    @Test
+    public void testShouldModifyOnlyAProjectYearAndReturnOkResponse(){
+        Project project = new ProjectDao().getProjectById(1L);
+        Assert.assertEquals("Awesome Project", project.getName());
+        Assert.assertEquals(2017, project.getYear());
+
+        project.setYear(2099);
+        String xml = project.toXML();
+        Entity<String> entity = Entity.entity(xml, MediaType.APPLICATION_XML);
+        Response response = target.path("projects/1/year").request().put(entity);
+        Assert.assertEquals(200, response.getStatus());
+
+        String checkResponse = target.path("projects/1").request().get(String.class);
+        Assert.assertTrue(checkResponse.contains("2099"));
+
+        setDatabaseToOriginalState(project);
     }
 
 }

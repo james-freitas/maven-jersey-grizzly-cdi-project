@@ -32,4 +32,8 @@ public class ProjectService {
     public void delete(Long id) {
         projectDao.remove(id);
     }
+
+    public void updateYear(Project projectWithModifiedYear) {
+        projectDao.updateYear(projectWithModifiedYear);
+    }
 }
